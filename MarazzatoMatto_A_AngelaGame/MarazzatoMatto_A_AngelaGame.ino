@@ -37,7 +37,7 @@ void loop()
       delay(1000);
   }
 
-  cambiaTurno();
+  /*cambiaTurno();
 
   if (sommaMosse != numMeta && sommaMosse < numMeta)
   {
@@ -52,7 +52,7 @@ void loop()
   }
 
   vittoria();
-    delay(1000);
+    delay(1000);*/
 }
 
 
@@ -147,6 +147,7 @@ void inserisciGiocata()
       lcd.setCursor(7,0);
       lcd.print("OK");
       inizio = true;
+      start = false;
     }
   }
 
