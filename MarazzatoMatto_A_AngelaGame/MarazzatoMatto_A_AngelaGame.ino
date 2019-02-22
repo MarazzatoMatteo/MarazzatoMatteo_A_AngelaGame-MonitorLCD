@@ -2,14 +2,14 @@
 
 #include <LiquidCrystal.h>
 
-int mossa1;
-int mossa2;
+int mossa;
 int numMeta;
 int sommaMosse;
-bool start = true;
-//char convertitore[2];
 int giocVincitore;
 int numTurno;
+
+bool start;
+bool passaTurno;
 
 LiquidCrystal lcd(2, 3, 4, 5, 6, 7);
 int buttonSx = 8;
@@ -19,23 +19,41 @@ int buttonDx = 10;
 void setup() 
 {
   lcd.begin(16,2);
+  
   numMeta = 30;
   sommaMosse = 0;
   giocVincitore = 2;
   numTurno = 0;
+  start = true;
+  passaTurno = false;
+  
   lcd.setCursor(1,0);
   lcd.print("INIZIO PARTITA");
+  /*for(int i = 0; i<14; i++)
+  {
+    lcd.scrollDisplayLeft();
+  }*/
+
 }
 
 void loop() 
 {
-    delay(500);
+    delay(1000);
 
   while (start == true)
   {
     inserisciGiocata();
       delay(1000);
   }
+
+  lcd.clear();
+
+  while (!passaTurno)
+  {
+    game();
+  }
+
+  delay(3000);
 
   /*cambiaTurno();
 
@@ -56,9 +74,39 @@ void loop()
 }
 
 
-void giocatore1()
+void game()
 {
-  Serial.println("GIOCATORE 1");
+  
+  if (digitalRead(buttonSx) == HIGH && mossa > 1)
+    {
+      mossa--;
+      lcd.setCursor(7,0);
+      lcd.print(mossa);
+      delay(200);
+    }
+
+    else if (digitalRead(buttonDx) == HIGH && mossa < 6) 
+    {
+      mossa++;
+      lcd.setCursor(7,0);
+      lcd.print(mossa);
+      delay(200);
+    }
+
+    else if (digitalRead(buttonC) == HIGH)
+    {
+      lcd.clear();
+      lcd.setCursor(5,0);
+      lcd.print("Numero");
+      lcd.setCursor(0,1);
+      lcd.print("selezionato: ");
+      lcd.setCursor(14,1);
+      lcd.print(mossa);
+      passaTurno = true;
+    }
+
+  
+  /*Serial.println("GIOCATORE 1");
   while (giocVincitore == 2)
   {
     while (Serial.available() == 0){} //indica quanti byte sono presenti nella casella di inserimento del monitor seriale (attraverso la codifica ASCII, null=0, 0=48, ...)
@@ -85,10 +133,12 @@ void giocatore1()
     {
       Serial.println("Mossa non valida, inserisci un altro valore");
     }
-  }
+  }*/
 }
 
-void giocatore2()
+
+
+/*void giocatore2()
 {
   Serial.println("GIOCATORE 2");
   while (giocVincitore == 1)
@@ -110,24 +160,25 @@ void giocatore2()
       Serial.println("Mossa non valida, inserisci un altro valore");
     } 
   }
-}
+}*/
 
 void inserisciGiocata()
 {
   bool inizio = false;
   lcd.clear();
   lcd.setCursor(0,0);
-  lcd.print("Inserisci il N");
+  lcd.print("Inserisci il");
   lcd.setCursor(0,1);
-  lcd.print("compreso 30 e 99");
+  lcd.print("numero finale");
+  lcd.setCursor(14,1);
+  lcd.print(numMeta);
   
   while (!inizio)
   {
     if (digitalRead(buttonSx) == HIGH && numMeta > 30)
     {
       numMeta--;
-      lcd.clear();
-      lcd.setCursor(7,0);
+      lcd.setCursor(14,1);
       lcd.print(numMeta);
       delay(200);
     }
@@ -135,8 +186,7 @@ void inserisciGiocata()
     else if (digitalRead(buttonDx) == HIGH && numMeta < 99) 
     {
       numMeta++;
-      lcd.clear();
-      lcd.setCursor(7,0);
+      lcd.setCursor(14,1);
       lcd.print(numMeta);
       delay(200);
     }
@@ -144,8 +194,12 @@ void inserisciGiocata()
     else if (digitalRead(buttonC) == HIGH)
     {
       lcd.clear();
-      lcd.setCursor(7,0);
-      lcd.print("OK");
+      lcd.setCursor(5,0);
+      lcd.print("Numero");
+      lcd.setCursor(0,1);
+      lcd.print("selezionato: ");
+      lcd.setCursor(14,1);
+      lcd.print(numMeta);
       inizio = true;
       start = false;
     }
