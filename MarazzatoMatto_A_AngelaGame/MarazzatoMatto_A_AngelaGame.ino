@@ -24,20 +24,20 @@ void setup()
   
   numMeta = 30;
   sommaMosse = 0;
-  giocVincitore = 2;
-  numTurno = 0;
+  //giocVincitore = 2;
+  numTurno = 1;
   mossa = 0;
   
   start = true;
   passaTurno = false;
   
-  lcd.setCursor(1,0);
+  lcd.setCursor(2,0);
   delay(1000);
   lcd.print("INIZIO PARTITA");
-  for(int i = 0; i<15; i++)
+  for(int i = 0; i<16; i++)
   {
     lcd.scrollDisplayLeft();
-    delay(100);
+    delay(200);
   }
 
 }
@@ -48,20 +48,22 @@ void loop()
 
   while (start == true)
   {
-    inserisciGiocata();
-    printGiocata(numMeta);
+    printInizio();
+    inserisciMeta();
+    printMeta(numMeta);
       delay(1000);
   }
 
   lcd.clear();
 
   mossaPrec = mossa;
+  printGame();
   while (passaTurno == false)
   {
     game();
   }
   
-  printMossa(newMossa);
+  printMossaSelezionata(newMossa);
   passaTurno = false;
 
   delay(1000);
@@ -84,45 +86,69 @@ void loop()
     delay(1000);*/
 }
 
-int game()
+void game()
 {
-  
   if (digitalRead(buttonSx) == HIGH && mossa > 1)
-    {
-      mossa--;
-      lcd.setCursor(7,0);
-      lcd.print(mossa);
-      delay(200);
-    }
+  {
+    mossa--;
+    lcd.setCursor(15,1);
+    lcd.print(mossa);
+    delay(200);
+  }
 
-    else if (digitalRead(buttonDx) == HIGH && mossa < 6) 
-    {
-      mossa++;
-      lcd.setCursor(7,0);
-      lcd.print(mossa);
-      delay(200);
-    }
+  else if (digitalRead(buttonDx) == HIGH && mossa < 6) 
+  {
+    mossa++;
+    lcd.setCursor(15,1);
+    lcd.print(mossa);
+    delay(200);
+  }
 
-    else if (digitalRead(buttonC) == HIGH && mossa != mossaPrec && mossa != 7-mossaPrec)
-    {
-      passaTurno = true;
-      delay(500);
-      newMossa = mossa;
-    }
+  else if (digitalRead(buttonC) == HIGH && mossa != mossaPrec && mossa != 7-mossaPrec)
+  {
+    passaTurno = true;
+    delay(500);
+    newMossa = mossa;
+  }
 }
 
-void printMossa(int displayMossa)
+void printGame()
 {
-  if (displayMossa > 0)
+  if (numTurno == 1)
   {
     lcd.clear();
     lcd.setCursor(5,0);
-    lcd.print("Numero");
+    lcd.print("Turno");
     lcd.setCursor(0,1);
-    lcd.print("selezionato: ");
-    lcd.setCursor(14,1);
-    lcd.print(displayMossa);
+    lcd.print("Giocatore 1: ");
+    lcd.setCursor(15,1);
+    lcd.print(mossa);
+
+    numTurno = 2;
   }
+
+  else
+  {
+    lcd.clear();
+    lcd.setCursor(5,0);
+    lcd.print("Turno");
+    lcd.setCursor(0,1);
+    lcd.print("Giocatore 2: ");
+    lcd.setCursor(15,1);
+    lcd.print(mossa);
+
+    numTurno = 1;
+  }
+  
+}
+
+void printMossaSelezionata(int displayMossa)
+{
+  lcd.clear();
+  lcd.setCursor(0,0);
+  lcd.print("Mossa");
+  lcd.setCursor(15,0);
+  lcd.print(displayMossa);
 }
 
 
@@ -150,16 +176,9 @@ void printMossa(int displayMossa)
   }
 }*/
 
-void inserisciGiocata()
+void inserisciMeta()
 {
   bool inizio = false;
-  lcd.clear();
-  lcd.setCursor(0,0);
-  lcd.print("Inserisci il");
-  lcd.setCursor(0,1);
-  lcd.print("numero finale");
-  lcd.setCursor(14,1);
-  lcd.print(numMeta);
   
   while (!inizio)
   {
@@ -187,7 +206,7 @@ void inserisciGiocata()
   }
 }
 
-void printGiocata(int displayGiocata)
+void printMeta(int displayGiocata)
 {
   lcd.clear();
   lcd.setCursor(5,0);
@@ -197,6 +216,18 @@ void printGiocata(int displayGiocata)
   lcd.setCursor(14,1);
   lcd.print(displayGiocata);
 }
+
+void printInizio()
+{
+  lcd.clear();
+  lcd.setCursor(0,0);
+  lcd.print("Inserisci la");
+  lcd.setCursor(0,1);
+  lcd.print("meta finale:");
+  lcd.setCursor(14,1);
+  lcd.print(numMeta);
+}
+
 
 void vittoria()
 {
@@ -238,8 +269,8 @@ void cambiaTurno()
 void reset()
 {
   sommaMosse = 0;
-  giocVincitore = 2;
-  numTurno = 0;
+  //giocVincitore = 2;
+  numTurno = 1;
   numMeta = 0;
   start = true;
 }
