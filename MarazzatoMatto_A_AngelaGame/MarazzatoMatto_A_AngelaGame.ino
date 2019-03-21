@@ -7,6 +7,7 @@ int mossaPrec;
 int numMeta;
 int sommaMosse;
 int numTurno;
+bool primaGiocata;
 
 bool start;
 bool passaTurno;
@@ -24,6 +25,7 @@ void setup()
   sommaMosse = 0;
   numTurno = 1;
   mossa = 0;
+  primaGiocata = true;
   
   start = true;
   passaTurno = false;
@@ -77,7 +79,24 @@ void loop()
 
 void game()
 {
-  if (digitalRead(buttonSx) == HIGH && mossa > 1)
+  if (primaGiocata == true && digitalRead(buttonSx) == HIGH && mossa > 0)
+  {
+    mossa--;
+    lcd.setCursor(15,0);
+    lcd.print(mossa);
+    delay(200);
+  }
+
+
+  /*else if (primaGiocata == true && digitalRead(buttonDx) == HIGH && mossa < 6) 
+  {
+    mossa++;
+    lcd.setCursor(15,0);
+    lcd.print(mossa);
+    delay(200);
+  }*/
+
+  if (digitalRead(buttonSx) == HIGH && mossa > 1 || primaGiocata == true && digitalRead(buttonSx) == HIGH && mossa > 0)
   {
     mossa--;
     lcd.setCursor(15,0);
@@ -93,9 +112,10 @@ void game()
     delay(200);
   }
 
-  else if (digitalRead(buttonC) == HIGH && mossa != mossaPrec && mossa != 7-mossaPrec)
+  else if (digitalRead(buttonC) == HIGH && mossa != mossaPrec && mossa != 7-mossaPrec || primaGiocata == true && digitalRead(buttonC) == HIGH && mossa == 0)
   {
     passaTurno = true;
+    primaGiocata = false;
     sommaMosse = sommaMosse + mossa;
   }
 }
