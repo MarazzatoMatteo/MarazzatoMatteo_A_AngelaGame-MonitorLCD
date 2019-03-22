@@ -271,6 +271,7 @@ void reset()
   numTurno = 1;
   numMeta = 30;
   start = true;
+  primaGiocata = true;
 }
 
 //  Copyright ITT Eugenio Barsanti / Produced by MARAZZATO MATTEO - 4BI  //
