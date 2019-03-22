@@ -152,11 +152,34 @@ void printGame()
 
 void printSommaMosse(int displayMossa)
 {
-  lcd.clear();
-  lcd.setCursor(0,0);
-  lcd.print("Somma Mosse");
-  lcd.setCursor(14,0);
-  lcd.print(displayMossa);
+  if (sommaMosse < 10)
+  {
+    lcd.clear();
+    lcd.setCursor(0,0);
+    lcd.print("Somma Mosse");
+    lcd.setCursor(15,0);
+    lcd.print(displayMossa);
+
+    lcd.setCursor(0,1);
+    lcd.print("Meta");
+    lcd.setCursor(14,1);
+    lcd.print(numMeta);
+  }
+
+  else
+  {
+    lcd.clear();
+    lcd.setCursor(0,0);
+    lcd.print("Somma Mosse");
+    lcd.setCursor(14,0);
+    lcd.print(displayMossa);
+
+    lcd.setCursor(0,1);
+    lcd.print("Meta");
+    lcd.setCursor(14,1);
+    lcd.print(numMeta);     
+  }
+  
 }
 
 void inserisciMeta()
@@ -225,6 +248,8 @@ bool vittoria()
     lcd.print("VINCE");
     reset();
 
+      delay(1000);
+
     return true;
   }
 
@@ -241,6 +266,8 @@ bool vittoria()
       lcd.print("VINCE");
       reset();
 
+        delay(1000);
+
       return true;
     }
     
@@ -254,6 +281,8 @@ bool vittoria()
       lcd.setCursor(6,1);
       lcd.print("VINCE");
       reset();
+
+        delay(1000);
 
       return true;
     }
