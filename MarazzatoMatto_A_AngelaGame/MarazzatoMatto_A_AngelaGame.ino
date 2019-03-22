@@ -30,13 +30,13 @@ void setup()
   start = true;
   passaTurno = false;
   
-  lcd.setCursor(2,0);
-  delay(2000);
+  lcd.setCursor(1,0);
   lcd.print("INIZIO PARTITA");
+  delay(2000);
   for(int i = 0; i<16; i++)
   {
     lcd.scrollDisplayLeft();
-    delay(200);
+    delay(120);
   }
 
 }
@@ -170,7 +170,7 @@ void inserisciMeta()
       numMeta--;
       lcd.setCursor(14,1);
       lcd.print(numMeta);
-      delay(200);
+      delay(100);
     }
 
     else if (digitalRead(buttonDx) == HIGH && numMeta < 99) 
@@ -178,7 +178,7 @@ void inserisciMeta()
       numMeta++;
       lcd.setCursor(14,1);
       lcd.print(numMeta);
-      delay(200);
+      delay(100);
     }
 
     else if (digitalRead(buttonC) == HIGH)
